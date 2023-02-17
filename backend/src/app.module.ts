@@ -9,6 +9,10 @@ import { SocketModule } from './socket/socket.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { getMongoConfig } from './config/mongo.config';
 import { ExgMetricsModule } from './exg-metrics/exg-metrics.module';
+import {Consumer} from "./consumer";
+import {MappingEntity} from "./entity/MappingEntity";
+import {ExcelMappingEntity} from "./entity/ExcelMappingEntity";
+import {Mapping} from "./mapping";
 
 
 @Module({
@@ -22,8 +26,10 @@ import { ExgMetricsModule } from './exg-metrics/exg-metrics.module';
 			password: process.env.POSTGRES_PASSWORD,
 			database: process.env.POSTGRES_DATABASE,
 			autoLoadEntities: true,
-			synchronize: true
+			synchronize: true,
+			migrations: []
 		}),
+		TypeOrmModule.forFeature([ MappingEntity, ExcelMappingEntity ]),
 		RedisModule.forRoot({
 			config: {
 				host: process.env.REDIS_HOST,
@@ -33,9 +39,24 @@ import { ExgMetricsModule } from './exg-metrics/exg-metrics.module';
 		MongooseModule.forRootAsync(getMongoConfig()),
 		SocketModule,
 		ExgMetricsModule
+		ClickHouseModule.register([
+			{
+				name: 'EXG_METRICS',
+				host: process.env.CLICKHOUSE_HOST,
+				database: process.env.CLICKHOUSE_DB,
+				port: parseInt(process.env.CLICKHOUSE_PORT ?? '8123'),
+				httpConfig: {}
+			}
+		]),
+		ClientsModule.register([
+			{
+				name: 'KAFKA_SERVICE',
+				transport: Transport.KAFKA,
+			}
+		])
 	],
 	controllers: [AppController],
-	providers: [AppService]
+	providers: [AppService, Consumer, Mapping]
 })
 export class AppModule {
 }
