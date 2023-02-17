@@ -10,6 +10,7 @@ import { SocketModule } from './socket/socket.module';
 import {Consumer} from "./consumer";
 import {MappingEntity} from "./entity/MappingEntity";
 import {ExcelMappingEntity} from "./entity/ExcelMappingEntity";
+import {Mapping} from "./mapping";
 
 
 @Module({
@@ -50,7 +51,7 @@ import {ExcelMappingEntity} from "./entity/ExcelMappingEntity";
 		])
 	],
 	controllers: [AppController],
-	providers: [AppService, Consumer]
+	providers: [AppService, Consumer, Mapping]
 })
 export class AppModule {
 }
