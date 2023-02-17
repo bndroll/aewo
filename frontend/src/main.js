@@ -4,11 +4,11 @@ import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
 import "@babel/polyfill";
-import ws from "./plugins/ws";
+// import ws from "./plugins/ws";
 import http from "./plugins/axios";
 
 Vue.config.productionTip = false;
-Vue.use(ws);
+// Vue.use(ws);
 Vue.use(http);
 
 new Vue({
