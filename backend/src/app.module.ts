@@ -9,6 +9,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { SocketModule } from './socket/socket.module';
 import {Consumer} from "./consumer";
 import {MappingEntity} from "./entity/MappingEntity";
+import {ExcelMappingEntity} from "./entity/ExcelMappingEntity";
 
 
 @Module({
@@ -25,7 +26,7 @@ import {MappingEntity} from "./entity/MappingEntity";
 			synchronize: true,
 			migrations: []
 		}),
-		TypeOrmModule.forFeature([ MappingEntity ]),
+		TypeOrmModule.forFeature([ MappingEntity, ExcelMappingEntity ]),
 		RedisModule.forRoot({
 			config: {
 				host: process.env.REDIS_HOST,
