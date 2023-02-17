@@ -6,6 +6,7 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ClickHouseModule } from '@depyronick/nestjs-clickhouse';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { SocketModule } from './socket/socket.module';
 
 
 @Module({
@@ -40,8 +41,22 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 			{
 				name: 'KAFKA_SERVICE',
 				transport: Transport.KAFKA,
+				options: {
+					client: {
+						brokers: ['rc1a-b5e65f36lm3an1d5.mdb.yandexcloud.net:9091'],
+						sasl: {
+							mechanism: 'scram-sha-512',
+							username: '9433_reader',
+							password: 'eUIpgWu0PWTJaTrjhjQD3.hoyhntiK',
+						}
+					},
+					consumer: {
+						groupId: 'aewo-consumer'
+					}
+				}
 			}
-		])
+		]),
+		SocketModule
 	],
 	controllers: [AppController],
 	providers: [AppService]
