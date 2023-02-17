@@ -30,3 +30,15 @@ services:
         hard: 262144
     volumes:
       - ./db/clickhouse:/var/lib/clickhouse
+
+  mongo:
+    image: 'mongo:latest'
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./db/mongo:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: aewo
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+    restart: unless-stopped
