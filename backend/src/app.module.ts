@@ -38,22 +38,6 @@ import {Mapping} from "./mapping";
 		}),
 		MongooseModule.forRootAsync(getMongoConfig()),
 		SocketModule,
-		ExgMetricsModule
-		ClickHouseModule.register([
-			{
-				name: 'EXG_METRICS',
-				host: process.env.CLICKHOUSE_HOST,
-				database: process.env.CLICKHOUSE_DB,
-				port: parseInt(process.env.CLICKHOUSE_PORT ?? '8123'),
-				httpConfig: {}
-			}
-		]),
-		ClientsModule.register([
-			{
-				name: 'KAFKA_SERVICE',
-				transport: Transport.KAFKA,
-			}
-		])
 	],
 	controllers: [AppController],
 	providers: [AppService, Consumer, Mapping]
