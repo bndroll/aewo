@@ -5,13 +5,18 @@ import * as path from "path";
 import {MappingEntity} from "./entity/MappingEntity";
 import {InjectRepository} from "@nestjs/typeorm";
 import {Repository} from "typeorm";
+import {ExcelMappingEntity} from "./entity/ExcelMappingEntity";
 
 const csv = require('csv-parser');
+const reader = require('xlsx')
 
 @Injectable()
 export class Consumer implements OnModuleInit, OnApplicationShutdown {
     private readonly consumer;
-    constructor(@InjectRepository(MappingEntity) private readonly repository: Repository<MappingEntity>) {
+    constructor(
+        @InjectRepository(MappingEntity) private readonly repository: Repository<MappingEntity>,
+        @InjectRepository(ExcelMappingEntity) private readonly repositoryExcel: Repository<ExcelMappingEntity>
+    ) {
         const kafka = new Kafka({
             clientId: 'aewo',
             brokers: [process.env.KAFKA_HOST],
@@ -44,6 +49,7 @@ export class Consumer implements OnModuleInit, OnApplicationShutdown {
         //     },
         // })
 
+        // РАСКОМЕНТИТЬ ДЛЯ ЗАГРУЗКИ
 
         // const results: {
         //     place: string,
@@ -52,8 +58,6 @@ export class Consumer implements OnModuleInit, OnApplicationShutdown {
         //     exhauster: string,
         //     active: string
         // }[] = [];
-
-        // РАСКОМЕНТИТЬ ДЛЯ ЗАГРУЗКИ
         // fs.createReadStream(path.join(__dirname, '../../backend/db/sample/signals_kafka.csv'))
         //     .pipe(csv())
         //     .on('data', (data) => results.push(data))
@@ -72,6 +76,28 @@ export class Consumer implements OnModuleInit, OnApplicationShutdown {
         //             await this.repository.insert(entity)
         //         }
         //     });
+
+
+// Reading our test file
+//         const file = reader.readFile(path.join(__dirname, '../../backend/db/sample/signals.xlsx'))
+//         const PLACE_EXCEL_KEY = 'Код сигнала в Kafka';
+//         const KEY_KEY = '__EMPTY_2';
+//         let data = []
+//
+//         const sheets = file.SheetNames
+//
+//         for (let i = 0; i < 6; i++) {
+//             const temp = reader.utils.sheet_to_json(file.Sheets[file.SheetNames[i]])
+//
+//             for (const res of temp) {
+//                 const e = new ExcelMappingEntity();
+//                 e.place = res[PLACE_EXCEL_KEY];
+//                 e.key =  res[KEY_KEY];
+//
+//                 await this.repositoryExcel.insert(e);
+//             }
+//         }
+//
 
     }
 }
