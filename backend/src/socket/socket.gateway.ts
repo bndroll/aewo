@@ -3,7 +3,7 @@ import { SocketService } from './socket.service';
 import { from, map } from 'rxjs';
 
 
-@WebSocketGateway(80)
+@WebSocketGateway(80, {transports: ['websocket']})
 export class SocketGateway {
 	constructor(private readonly socketService: SocketService) {
 	}
