@@ -8,6 +8,7 @@ import { ClickHouseModule } from '@depyronick/nestjs-clickhouse';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { SocketModule } from './socket/socket.module';
 import {Consumer} from "./consumer";
+import {MappingEntity} from "./entity/MappingEntity";
 
 
 @Module({
@@ -21,8 +22,10 @@ import {Consumer} from "./consumer";
 			password: process.env.POSTGRES_PASSWORD,
 			database: process.env.POSTGRES_DATABASE,
 			autoLoadEntities: true,
-			synchronize: true
+			synchronize: true,
+			migrations: []
 		}),
+		TypeOrmModule.forFeature([ MappingEntity ]),
 		RedisModule.forRoot({
 			config: {
 				host: process.env.REDIS_HOST,
