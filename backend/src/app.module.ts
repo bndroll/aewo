@@ -13,6 +13,8 @@ import {Consumer} from "./consumer";
 import {MappingEntity} from "./entity/MappingEntity";
 import {ExcelMappingEntity} from "./entity/ExcelMappingEntity";
 import {Mapping} from "./mapping";
+import DataMapper from "./data-mapper";
+import {SocketService} from "./socket/socket.service";
 
 
 @Module({
@@ -41,7 +43,7 @@ import {Mapping} from "./mapping";
 		ExgMetricsModule
 	],
 	controllers: [AppController],
-	providers: [AppService, Consumer, Mapping]
+	providers: [AppService, Consumer, Mapping, DataMapper, SocketService]
 })
 export class AppModule {
 }
