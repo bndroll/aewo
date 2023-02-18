@@ -6,7 +6,8 @@ import { ExgMetric, ExgMetricSchema } from './entities/exg-metric.entity';
 
 @Module({
 	imports: [MongooseModule.forFeature([{name: ExgMetric.name, schema: ExgMetricSchema}])],
-	providers: [ExgMetricsService]
+	providers: [ExgMetricsService],
+	exports: [ExgMetricsService]
 })
 export class ExgMetricsModule {
 }

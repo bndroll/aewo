@@ -38,6 +38,7 @@ import {Mapping} from "./mapping";
 		}),
 		MongooseModule.forRootAsync(getMongoConfig()),
 		SocketModule,
+		ExgMetricsModule
 	],
 	controllers: [AppController],
 	providers: [AppService, Consumer, Mapping]
