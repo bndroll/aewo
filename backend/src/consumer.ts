@@ -6,6 +6,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ExcelMappingEntity } from './entity/ExcelMappingEntity';
 import { ExgMetricsService } from './exg-metrics/exg-metrics.service';
+import {SocketService} from "./socket/socket.service";
+import DataMapper from "./data-mapper";
 
 
 const csv = require('csv-parser');
@@ -18,7 +20,9 @@ export class Consumer implements OnModuleInit, OnApplicationShutdown {
 	constructor(
 		@InjectRepository(MappingEntity) private readonly repository: Repository<MappingEntity>,
 		@InjectRepository(ExcelMappingEntity) private readonly repositoryExcel: Repository<ExcelMappingEntity>,
-		private readonly metricsService: ExgMetricsService
+		private readonly metricsService: ExgMetricsService,
+		private readonly socketService: SocketService,
+		private readonly mapper: DataMapper
 	) {
 		const kafka = new Kafka({
 			clientId: 'aewo',
@@ -50,15 +54,28 @@ export class Consumer implements OnModuleInit, OnApplicationShutdown {
 				let data = {...value};
 				// @ts-ignore
 				delete data.moment;
-				await this.metricsService.insertMetric({
-					moment: momentTime,
-					exg_data: data
-				});
+				// @ts-ignore
+
+				await Promise.all([
+					this.metricsService.insertMetric({
+						moment: momentTime,
+						exg_data: data
+					}),
+					this.emitDataToSocket(data)
+				])
+
 				console.log({
 					partition,
 					offset: message.offset
 				});
 			}
 		});
+	}
+
+	async emitDataToSocket(data: Record<string, number>) {
+		const dataForEmit = await this.mapper.map(data);
+		// fs.writeFileSync('/Users/a.akutin/Desktop/sample.json', JSON.stringify(dataForEmit['1']));
+		// throw new Error('FUCK');
+		this.socketService.emitData(dataForEmit);
 	}
 }

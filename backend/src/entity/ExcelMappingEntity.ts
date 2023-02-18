@@ -53,6 +53,24 @@ export class ExcelMappingEntity {
 
     @Column({
         nullable: false,
+        default: false
+    })
+    is_oil: boolean;
+
+    @Column({
+        nullable: false,
+        default: false
+    })
+    is_water: boolean;
+
+    @Column({
+        nullable: false,
+        default: false
+    })
+    is_gas: boolean;
+
+    @Column({
+        nullable: false,
         default: '',
     })
     mapping_key: string;

@@ -60,10 +60,15 @@ export class Mapping implements OnModuleInit, OnApplicationShutdown {
 			const e = new ExcelMappingEntity();
 			e.place = row[PLACE_EXCEL_KEY];
 			e.mapping_key = row[KEY_KEY];
+
 			e.is_temperature = this.isTemperatureIndex(idx);
 			e.is_vibration_axial = this.isAxialVibrationIndex(idx);
 			e.is_vibration_horizontal = this.isHorizontalVibrationIndex(idx);
 			e.is_vibration_vertical = this.isVerticalVibrationIndex(idx);
+			e.is_gas = this.isGasIndex(idx);
+			e.is_oil = this.isOilIndex(idx);
+			e.is_water = this.isWaterIndex(idx);
+
 			e.pod_number = this.getPodNumberByIndex(idx);
 			e.exhauster_number = exhausterNumber;
 
@@ -165,6 +170,27 @@ export class Mapping implements OnModuleInit, OnApplicationShutdown {
 			return true;
 		}
 
+		return false;
+	}
+
+	private isWaterIndex(index: number) {
+		if (index >= 107 && index <= 109) {
+			return true;
+		}
+		return false;
+	}
+
+	private isOilIndex(index: number) {
+		if (index >= 105 && index <= 106) {
+			return true;
+		}
+		return false;
+	}
+
+	private isGasIndex(index: number) {
+		if (index === 109) {
+			return true;
+		}
 		return false;
 	}
 
