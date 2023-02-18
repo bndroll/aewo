@@ -40,27 +40,25 @@ export class Consumer implements OnModuleInit, OnApplicationShutdown {
 	}
 
 	async onModuleInit(): Promise<any> {
-	// 	await this.consumer.connect();
-	// 	await this.consumer.subscribe({topic: process.env.KAFKA_TOPIC, fromBeginning: true});
-	// 	await this.consumer.run({
-	// 		eachMessage: async ({topic, partition, message}) => {
-	// 			// like      "SM_Exgauster\\[0:45]": 45.5
-	// 			const value: Record<string, number> = JSON.parse(message.value.toString());
-	// 			const momentTime = new Date(value.moment).getTime();
-	// 			let data = {...value};
-	// 			// @ts-ignore
-	// 			delete data.moment;
-	// 			// @ts-ignore
-	// 			const dataDB = JSON.stringify(data);
-	// 			await this.metricsService.insertMetric({
-	// 				moment: momentTime,
-	// 				exg_data: dataDB
-	// 			});
-	// 			console.log({
-	// 				partition,
-	// 				offset: message.offset
-	// 			});
-	// 		}
-	// 	});
+		await this.consumer.connect();
+		await this.consumer.subscribe({topic: process.env.KAFKA_TOPIC, fromBeginning: true});
+		await this.consumer.run({
+			eachMessage: async ({topic, partition, message}) => {
+				// like      "SM_Exgauster\\[0:45]": 45.5
+				const value: Record<string, number> = JSON.parse(message.value.toString());
+				const momentTime = new Date(value.moment).getTime();
+				let data = {...value};
+				// @ts-ignore
+				delete data.moment;
+				await this.metricsService.insertMetric({
+					moment: momentTime,
+					exg_data: data
+				});
+				console.log({
+					partition,
+					offset: message.offset
+				});
+			}
+		});
 	}
 }
