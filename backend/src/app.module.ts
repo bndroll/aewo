@@ -43,7 +43,7 @@ import {SocketService} from "./socket/socket.service";
 		ExgMetricsModule
 	],
 	controllers: [AppController],
-	providers: [AppService, Consumer, Mapping, DataMapper, SocketService]
+  providers: [AppService, Consumer, Mapping, DataMapper],
 })
 export class AppModule {
 }
