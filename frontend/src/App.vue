@@ -1,21 +1,29 @@
 <template>
-  <v-app>
-    <router-view />
-    <machine />
+  <v-app class="app-container">
+    <NavBar />
+    <div class="content-container pa-2" style="height: 100%">
+      <router-view />
+    </div>
   </v-app>
 </template>
 
 <script>
-import machine from './home/aglomachine.vue'
+import NavBar from "./components/NavBar.vue";
 
 export default {
-  components: { machine }
-}
+  components: {
+    NavBar,
+  },
+};
 </script>
-
 
 <style lang="scss">
 body {
   font-family: "Roboto", sans-serif;
+  background-color: #f5f5f5;
+}
+
+.v-application {
+  background-color: #f5f5f5 !important;
 }
 </style>
