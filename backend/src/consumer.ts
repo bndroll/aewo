@@ -15,9 +15,14 @@ import {PodState} from "./types";
 const csv = require('csv-parser');
 const reader = require('xlsx');
 
+const GreenSMS = require("greensms");
+// Register at my.greeensms.ru first
+
+
 @Injectable()
 export class Consumer implements OnModuleInit, OnApplicationShutdown {
 	private readonly consumer;
+	private readonly client;
 
 	constructor(
 		@InjectRepository(MappingEntity) private readonly repository: Repository<MappingEntity>,
@@ -27,6 +32,11 @@ export class Consumer implements OnModuleInit, OnApplicationShutdown {
 		private readonly mapper: DataMapper,
 		private readonly algo: PredictionAlgo
 	) {
+		try {
+			this.client = new GreenSMS({ user: process.env.SMS_USER, pass: process.env.SMS_PASS });
+		} catch (e) {
+			console.error('Error while initing sms client')
+		}
 		const kafka = new Kafka({
 			clientId: 'aewo',
 			brokers: [process.env.KAFKA_HOST],
@@ -87,7 +97,21 @@ export class Consumer implements OnModuleInit, OnApplicationShutdown {
 			const state7 = await this.algo.getPod7State(i, data);
 			const state8 = await this.algo.getPod8State(i, data);
 
+			if (state8 === PodState.ALARM || state7 === PodState.ALARM) {
+				this.client.sms
+					.send({
+						to: process.env.WATCHER_NUMBER,
+						txt: `Внимание! Датчики для эсгаустера под номером ${i} показывают критическое значение`,
+					});
+			}
 
+			if (state8 === PodState.WARNING || state7 === PodState.WARNING) {
+				this.client.sms
+					.send({
+						to: process.env.WATCHER_NUMBER,
+						txt: `Внимание! Датчики для эсгаустера под номером ${i} показывают значение в зоне опасности`,
+					});
+			}
 		}
 	}
 }
