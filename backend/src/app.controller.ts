@@ -9,7 +9,7 @@ export class AppController {
 	) {
 	}
 
-	@Get()
+	@Get('metrics/find-last')
 	async getLastInfo() {
 		return await this.appService.getLastInfo();
 	}
