@@ -1,17 +1,24 @@
 <template>
-  <div class="machines-container">
-    <AgloMachine />
-    <AgloMachine />
-    <AgloMachine />
+  <div>
+    <LegendMain />
+    <div class="machines-container">
+      <AgloMachine />
+      <AgloMachine />
+      <AgloMachine />
+    </div>
   </div>
 </template>
 
 <script>
 import AgloMachine from "../components/AgloMachine.vue";
+import LegendMain from "../components/LegendMain.vue";
 
 export default {
   name: "HomeView",
-  components: { AgloMachine },
+  components: { AgloMachine, LegendMain },
+  mounted() {
+    this.$ws.emit("get_metrics");
+  },
 };
 </script>
 <style scoped>

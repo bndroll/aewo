@@ -21,9 +21,6 @@
 <script>
 export default {
   name: "ExNavigation",
-  mounted() {
-    console.log(this.$route);
-  },
 };
 </script>
 
