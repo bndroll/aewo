@@ -1,13 +1,15 @@
-import { Injectable, OnApplicationShutdown, OnModuleInit } from '@nestjs/common';
-import { Kafka } from 'kafkajs';
+import {Injectable, OnApplicationShutdown, OnModuleInit} from '@nestjs/common';
+import {Kafka} from 'kafkajs';
 import * as fs from 'fs';
-import { MappingEntity } from './entity/MappingEntity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { ExcelMappingEntity } from './entity/ExcelMappingEntity';
-import { ExgMetricsService } from './exg-metrics/exg-metrics.service';
+import {MappingEntity} from './entity/MappingEntity';
+import {InjectRepository} from '@nestjs/typeorm';
+import {Repository} from 'typeorm';
+import {ExcelMappingEntity} from './entity/ExcelMappingEntity';
+import {ExgMetricsService} from './exg-metrics/exg-metrics.service';
 import {SocketService} from "./socket/socket.service";
 import DataMapper from "./data-mapper";
+import PredictionAlgo from "./prediction-algo";
+import {PodState} from "./types";
 
 
 const csv = require('csv-parser');
@@ -22,7 +24,8 @@ export class Consumer implements OnModuleInit, OnApplicationShutdown {
 		@InjectRepository(ExcelMappingEntity) private readonly repositoryExcel: Repository<ExcelMappingEntity>,
 		private readonly metricsService: ExgMetricsService,
 		private readonly socketService: SocketService,
-		private readonly mapper: DataMapper
+		private readonly mapper: DataMapper,
+		private readonly algo: PredictionAlgo
 	) {
 		const kafka = new Kafka({
 			clientId: 'aewo',
@@ -61,7 +64,8 @@ export class Consumer implements OnModuleInit, OnApplicationShutdown {
 						moment: momentTime,
 						exg_data: data
 					}),
-					this.emitDataToSocket(data)
+					this.emitDataToSocket(data),
+					this.checkPodsState(data)
 				])
 
 				console.log({
@@ -74,8 +78,14 @@ export class Consumer implements OnModuleInit, OnApplicationShutdown {
 
 	async emitDataToSocket(data: Record<string, number>) {
 		const dataForEmit = await this.mapper.map(data);
-		// fs.writeFileSync('/Users/a.akutin/Desktop/sample.json', JSON.stringify(dataForEmit['1']));
-		// throw new Error('FUCK');
 		this.socketService.emitData(dataForEmit);
+	}
+
+	async checkPodsState(data: Record<string, number>) {
+		for (let i = 1; i < 7; i++) {
+			// i - num of exhauster
+			const state7 = await this.algo.getPod7State(i, data);
+			const state8 = await this.algo.getPod8State(i, data);
+		}
 	}
 }

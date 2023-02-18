@@ -79,3 +79,9 @@ export interface EventObject {
         position: number
     }
 }
+
+export enum PodState {
+    NORMAL = 'NORMAL',
+    WARNING = 'WARNING',
+    ALARM = 'ALARM'
+}

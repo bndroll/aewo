@@ -15,6 +15,7 @@ import {ExcelMappingEntity} from "./entity/ExcelMappingEntity";
 import {Mapping} from "./mapping";
 import DataMapper from "./data-mapper";
 import {SocketService} from "./socket/socket.service";
+import PredictionAlgo from "./prediction-algo";
 
 
 @Module({
@@ -43,7 +44,7 @@ import {SocketService} from "./socket/socket.service";
 		ExgMetricsModule
 	],
 	controllers: [AppController],
-  providers: [AppService, Consumer, Mapping, DataMapper],
+  providers: [AppService, Consumer, Mapping, DataMapper, PredictionAlgo],
 })
 export class AppModule {
 }
