@@ -1,7 +1,8 @@
 import {
-  MessageBody,
-  SubscribeMessage,
-  WebSocketGateway,
+	ConnectedSocket,
+	MessageBody,
+	SubscribeMessage,
+	WebSocketGateway,
 } from "@nestjs/websockets";
 import { SocketService } from "./socket.service";
 import { from, map } from "rxjs";
