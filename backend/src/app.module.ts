@@ -15,6 +15,7 @@ import {ExcelMappingEntity} from "./entity/ExcelMappingEntity";
 import {Mapping} from "./mapping";
 import DataMapper from "./data-mapper";
 import {SocketService} from "./socket/socket.service";
+import { NotificationsModule } from './notifications/notifications.module';
 import PredictionAlgo from "./prediction-algo";
 
 
@@ -41,7 +42,8 @@ import PredictionAlgo from "./prediction-algo";
 		}),
 		MongooseModule.forRootAsync(getMongoConfig()),
 		SocketModule,
-		ExgMetricsModule
+		ExgMetricsModule,
+		NotificationsModule
 	],
 	controllers: [AppController],
   providers: [AppService, Consumer, Mapping, DataMapper, PredictionAlgo],

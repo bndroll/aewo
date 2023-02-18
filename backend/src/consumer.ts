@@ -86,6 +86,8 @@ export class Consumer implements OnModuleInit, OnApplicationShutdown {
 			// i - num of exhauster
 			const state7 = await this.algo.getPod7State(i, data);
 			const state8 = await this.algo.getPod8State(i, data);
+
+
 		}
 	}
 }
