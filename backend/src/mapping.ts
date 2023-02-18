@@ -33,7 +33,7 @@ export class Mapping implements OnModuleInit, OnApplicationShutdown {
 		await this.repository.clear();
 		await this.repositoryExcel.clear();
 
-		// await this.uploadCSV();
+		await this.uploadCSV();
 		await this.uploadExcel();
 	}
 
