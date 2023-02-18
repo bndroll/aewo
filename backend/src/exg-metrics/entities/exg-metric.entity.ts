@@ -6,8 +6,8 @@ export class ExgMetric {
 	@Prop({required: true})
 	moment: number;
 
-	@Prop({required: true})
-	exg_data: string;
+	@Prop({type: Object})
+	exg_data: Object;
 }
 
 export const ExgMetricSchema = SchemaFactory.createForClass(ExgMetric);

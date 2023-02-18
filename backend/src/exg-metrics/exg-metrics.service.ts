@@ -9,8 +9,6 @@ export class ExgMetricsService {
 	constructor(
 		@InjectModel(ExgMetric.name) private readonly exgMetric: Model<ExgMetric>
 	) {
-		this.insertMetric({moment: 123456, exg_data: '{"qioneniquwe": "qweqeqewwq", "qeqeqeq": 12313}'});
-		this.findMetric(5).then(r => console.log(r));
 	}
 
 	async insertMetric(metric: ExgMetric) {
