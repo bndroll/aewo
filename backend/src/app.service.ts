@@ -12,6 +12,7 @@ export class AppService {
 	}
 
 	async getLastInfo() {
-		return await this.metricsService.findMetric(6);
+		const item = (await this.metricsService.findMetric(1))[0];
+		return await this.dataMapper.map(item.exg_data as Record<string, number>);
 	}
 }

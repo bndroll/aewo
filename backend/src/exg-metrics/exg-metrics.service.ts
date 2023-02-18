@@ -8,7 +8,8 @@ import { Model } from 'mongoose';
 export class ExgMetricsService {
 	constructor(
 		@InjectModel(ExgMetric.name) private readonly exgMetric: Model<ExgMetric>
-	) {}
+	) {
+	}
 
 	async insertMetric(metric: ExgMetric) {
 		await new this.exgMetric({
@@ -18,6 +19,6 @@ export class ExgMetricsService {
 	}
 
 	async findMetric(limit: number) {
-		return this.exgMetric.find().limit(limit);
+		return await this.exgMetric.find().sort({_id: -1}).limit(limit).exec();
 	}
 }
