@@ -1,11 +1,10 @@
 <template>
   <div class="aglomachine-container pa-2">
     <div class="aglomachine-header px-4 py-2 mb-2">
-      <span>Агломашина 1</span>
+      <span>Агломашина {{ number }}</span>
     </div>
     <div class="exhausters-container">
-      <Exhauster />
-      <Exhauster />
+      <Exhauster v-for="el in exhausters" :key="el.id" :exhauster="el" />
     </div>
   </div>
 </template>
@@ -17,6 +16,10 @@ export default {
   name: "AgloMachine",
   components: {
     Exhauster,
+  },
+  props: {
+    number: Number,
+    exhausters: Array,
   },
 };
 </script>

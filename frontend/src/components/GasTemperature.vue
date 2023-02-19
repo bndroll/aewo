@@ -2,41 +2,25 @@
   <div class="gas-temperature pa-2 d-flex flex-column">
     <div class="d-flex justify-space-between mb-2">
       <div class="text-caption">ТЕМПЕРАТУРА ГАЗА, C</div>
-      <div class="text-caption font-weight-bold">{{ value }}</div>
+      <div class="text-caption font-weight-bold">{{ data.temperature.toFixed(2) }}</div>
     </div>
-    <v-progress-linear
-      v-model="value"
-      color="primary"
-      height="25"
-      rounded
-      class="mb-2"
-      style="pointer-events: none"
-    ></v-progress-linear>
     <div class="d-flex justify-space-between mb-2">
       <div class="d-flex">
         <div class="text-caption font-weight-bold">Разряжение,</div>
         <div class="text-caption font-weight-thin font-italic">мм.в.ст</div>
       </div>
-      <div class="text-caption font-weight-bold">45</div>
+      <div class="text-caption font-weight-bold">{{ data.underpressure.toFixed(2) }}</div>
     </div>
-    <div class="d-flex justify-space-between mb-2">
-      <div class="d-flex">
-        <div class="text-caption font-weight-bold">Уровень пыли,</div>
-        <div class="text-caption font-weight-thin font-italic">мг/м3</div>
-      </div>
-      <div class="text-caption font-weight-bold">45</div>
-    </div>
+    
   </div>
 </template>
 
 <script>
 export default {
   name: "GasTemperature",
-  data() {
-    return {
-      value: 25,
-    };
-  },
+  props: {
+    data: Object
+  }
 };
 </script>
 

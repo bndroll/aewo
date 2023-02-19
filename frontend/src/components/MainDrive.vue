@@ -14,7 +14,7 @@
         <div class="text-caption font-weight-bold">Ток стартера,</div>
         <div class="text-caption font-weight-thin font-italic">А</div>
       </div>
-      <div class="text-caption font-weight-bold">45</div>
+      <div class="text-caption font-weight-bold">{{ data.statorCurrent.toFixed(2) }}</div>
     </div>
     <div class="d-flex justify-space-between mb-2">
       <div class="d-flex">
@@ -36,6 +36,9 @@
 <script>
 export default {
   name: "MainDrive",
+  props: {
+    data: Object
+  }
 };
 </script>
 

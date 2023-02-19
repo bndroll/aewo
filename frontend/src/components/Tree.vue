@@ -20,7 +20,7 @@ export default {
                         children: [
                             { id: 111, name: 'T, °С', value: "0000" },
                             { id: 112, name: 'Верт, мм/с', value: "0000" },
-                            { id: 113, name: 'Гор, °С', value: "0000" },
+                            { id: 113, name: 'Гор, мм/с', value: "0000" },
                             { id: 114, name: 'Ось, мм/с', value: "0000" },
                         ],
                     },
@@ -30,7 +30,7 @@ export default {
                         children: [
                             { id: 121, name: 'T, °С', value: "0000" },
                             { id: 122, name: 'Верт, мм/с', value: "0000" },
-                            { id: 123, name: 'Гор, °С', value: "0000" },
+                            { id: 123, name: 'Гор, мм/с', value: "0000" },
                             { id: 124, name: 'Ось, мм/с', value: "0000" },
                         ],
                     },
@@ -40,7 +40,7 @@ export default {
                         children: [
                             { id: 131, name: 'T, °С', value: "0000" },
                             { id: 132, name: 'Верт, мм/с', value: "0000" },
-                            { id: 133, name: 'Гор, °С', value: "0000" },
+                            { id: 133, name: 'Гор, мм/с', value: "0000" },
                             { id: 134, name: 'Ось, мм/с', value: "0000" },
                         ],
                     },
@@ -50,7 +50,7 @@ export default {
                         children: [
                             { id: 141, name: 'T, °С', value: "0000" },
                             { id: 142, name: 'Верт, мм/с', value: "0000" },
-                            { id: 143, name: 'Гор, °С', value: "0000" },
+                            { id: 143, name: 'Гор, мм/с', value: "0000" },
                             { id: 144, name: 'Ось, мм/с', value: "0000" },
                         ],
                     },
@@ -114,7 +114,7 @@ export default {
     }),
     watch: {
         selection(v) {
-            console.log(v)
+            this.$emit('select', v)
         }
     }
 }
@@ -123,12 +123,13 @@ export default {
 <style>
 .tree-container {
     width: 300px;
-    height: 100%;
+    height: 831px;
     border-right: 1px solid #E6E6E6;
     font-weight: 400;
     font-size: 15px;
     line-height: 28px;
     letter-spacing: 0.15px;
     color: rgba(0, 0, 0, 0.87);
+    overflow-y: scroll;
 }
 </style>

@@ -1,51 +1,41 @@
 <template>
-    <v-row justify="center">
-        <v-btn color="primary" dark @click.stop="dialog = true">
-            Open Dialog
-        </v-btn>
+	<v-dialog v-model="alarmModal.isOpen" max-width="800px" v-if="alarmModal.data">
+		<v-card>
+			<v-card-title class="modal-header pb-2">Упрощенная схема эксгаустера</v-card-title>
 
-        <v-dialog v-model="dialog" max-width="580px">
-            <v-card>
-                <v-card-title class="modal-header pb-2">Упрощенная схема эксгаустера</v-card-title>
+			<div class="modal-schema px-6 pb-4">
+				<v-img class="schema-image" contain src="../assets/Vector.png">
+					<div class="error-label" :class="`pod${alarmModal.data.number }`">{{ alarmModal.data.number }}</div>
+				</v-img>
+			</div>
 
-                <div class="modal-schema px-6 pb-4">
-                    <v-img class="schema-image" contain src="../assets/Vector.png">
-                        <div class="error-label first">1</div>
-                        <div class="error-label second">2</div>
-                        <div class="error-label third">3</div>
-                        <div class="error-label fourth">4</div>
-                        <div class="error-label fifth">5</div>
-                        <div class="error-label sixth">6</div>
-                        <div class="error-label seventh">7</div>
-                        <div class="error-label eighth">8</div>
-                        <div class="error-label nineth">9</div>
-                    </v-img>
-                </div>
+			<v-card-title class="modal-status pb-2">Критическая ошибка</v-card-title>
 
-                <v-card-title class="modal-status pb-2"> Критическая ошибка </v-card-title>
-
-                <v-card-text class="modal-text">
-                    Наблюдаются проблемы в 4 подшипнике эксгаустера Х-172
-                </v-card-text>
-                <v-card-text class="modal-text">
-                    Подшипник вентилятора с приводной стороны - локальная проблема подшипника. Проведите ремонтные работы.
-                </v-card-text>
-
-                <v-card-actions class="px-6 pb-4 pt-0">
-                    <v-btn color="primary" @click="dialog = false"> Отправить заявку </v-btn>
-                    <v-btn color="primary" text @click="dialog = false"> Закрыть </v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-    </v-row>
+			<v-card-text class="modal-text">
+					Наблюдаются проблемы в {{ alarmModal.data.number }} подшипнике эксгаустера {{ alarmModal.data.name }}
+			</v-card-text>
+			<v-card-actions class="px-6 pb-4 pt-0">
+					<v-btn color="primary" @click="onClose()"> Отправить заявку </v-btn>
+					<v-btn color="primary" text @click="onClose()"> Закрыть </v-btn>
+			</v-card-actions>
+		</v-card>
+	</v-dialog>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
-    name: "error-modal",
-    data() {
-        return { dialog: false }
+	name: "error-modal",
+	computed: {
+		...mapState({
+				alarmModal: state => state.alarmModal
+		})
+	},
+	methods: {
+		onClose() {
+      this.$store.commit('setAlarmModal', { isOpen: false, data: undefined });
     }
+	}
 }
 </script>
 
@@ -95,50 +85,49 @@ export default {
     text-align: center;
 }
 
-.first {
-    left: 487px;
-    top: 70px;
+.pod1 {
+	left: 693px;
+	top: 109px;
 }
 
-.second {
-    left: 299px;
-    top: 70px;
+.pod2 {
+	left: 428px;
+	top: 150px;
 }
 
-.third {
-    left: 225px;
-    top: 85px;
+.pod3 {
+	left: 324px;
+	top: 125px;
 }
 
-.fourth {
-    left: 185px;
-    top: 85px;
+.pod4 {
+	left: 268px;
+	top: 125px;
 }
 
-.fifth {
-    left: 225px;
-    top: 125px;
+.pod5 {
+	left: 324px;
+	top: 179px;
 }
 
-.sixth {
-    left: 185px;
-    top: 125px;
+.pod6 {
+	left: 268px;
+	top: 179px;
 }
 
-.seventh {
-    left: 70px;
-    top: 125px;
+.pod7 {
+	left: 106px;
+	top: 178px;
 }
 
-.eighth {
-    left: -4px;
-    top: 125px;
+.pod8 {
+	left: 1px;
+	top: 184px;
 }
 
-.nineth {
-    left: -4px;
-    top: 85px;
+.pod9 {
+	left: 1px;
+	top: 127px;
 }
 
-.oil {}
 </style>

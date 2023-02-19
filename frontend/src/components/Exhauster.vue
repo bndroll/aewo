@@ -5,21 +5,14 @@
       @click="onExhausterClick()"
     >
       <div class="d-flex align-center">
-        <div class="exhauster-status"></div>
-        <span class="exhauster-name ml-2">Эксгаустер 1</span>
+        <div class="exhauster-status" :class="[status]"></div>
+        <span class="exhauster-name ml-2">Эксгаустер {{ exhauster.name }}</span>
       </div>
 
       <v-icon> mdi-chevron-right </v-icon>
     </div>
 
     <div class="d-flex flex-column">
-      <div
-        class="rotor-container d-flex justify-space-between align-center py-2 px-4"
-      >
-        <span class="rotor">Ротор</span>
-        <span class="date px-3">12.01.2023</span>
-      </div>
-
       <div class="pa-1 mb-4">
         <span class="info-text">Основная информация:</span>
 
@@ -28,7 +21,7 @@
             class="info-lastchange-container d-flex flex-column justify-space-between pa-2"
           >
             <span class="info-text">Последняя замена</span>
-            <span class="info-days">15 суток</span>
+            <span class="info-days">{{ exhauster.lastChange }} суток</span>
           </div>
 
           <div
@@ -38,7 +31,7 @@
               <span class="info-text">Прогноз</span>
               <v-icon x-small color="red" class="ml-1">mdi-information</v-icon>
             </div>
-            <span class="info-days">15 суток</span>
+            <span class="info-days">{{ exhauster.prognozis }} суток</span>
           </div>
         </div>
       </div>
@@ -47,19 +40,26 @@
         <img src="../assets/scheme.png" class="scheme-image pa-2" />
       </div>
 
-      <v-expansion-panels multiple class="mt-2">
-        <v-expansion-panel>
+      <v-expansion-panels multiple class="mt-2" v-model="items">
+        <v-expansion-panel v-if="warnings.length">
           <v-expansion-panel-header>Предупреждения</v-expansion-panel-header>
           <v-expansion-panel-content>
-            <podshipnik />
-            <podshipnik />
+
           </v-expansion-panel-content>
         </v-expansion-panel>
         <v-expansion-panel>
           <v-expansion-panel-header>Все подшипники</v-expansion-panel-header>
-          <v-expansion-panel-content>
-            <podshipnik />
-            <podshipnik />
+          <v-expansion-panel-content v-if="exhauster.data" >
+            <Podshipnik :number="1" :data="exhauster.data.pod1" @alarm="($e) => onAlarm($e)" @warning="() => onWarning()"  />
+            <Podshipnik :number="2" :data="exhauster.data.pod2" @alarm="($e) => onAlarm($e)" @warning="() => onWarning()"/>
+            <Podshipnik :number="3" :data="exhauster.data.pod3" @alarm="($e) => onAlarm($e)" @warning="() => onWarning()"/>
+            <Podshipnik :number="4" :data="exhauster.data.pod4" @alarm="($e) => onAlarm($e)" @warning="() => onWarning()"/>
+            <Podshipnik :number="5" :data="exhauster.data.pod5" @alarm="($e) => onAlarm($e)" @warning="() => onWarning()"/>
+            <Podshipnik :number="6" :data="exhauster.data.pod6" @alarm="($e) => onAlarm($e)" @warning="() => onWarning()"/>
+            <Podshipnik :number="7" :data="exhauster.data.pod7" @alarm="($e) => onAlarm($e)" @warning="() => onWarning()"/>
+            <Podshipnik :number="8" :data="exhauster.data.pod8" @alarm="($e) => onAlarm($e)" @warning="() => onWarning()"/>
+            <Podshipnik :number="9" :data="exhauster.data.pod9" @alarm="($e) => onAlarm($e)" @warning="() => onWarning()"/>
+            <OilLevelSmall :data="exhauster.data.oilSystem" @alarm="($e) => onAlarm($e)" />
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
@@ -69,14 +69,36 @@
 
 <script>
 import Podshipnik from "./podshipnik/Podshipnik";
+import OilLevelSmall from './podshipnik/OilLevelSmall'
 
 export default {
-  components: { Podshipnik },
+  components: { Podshipnik, OilLevelSmall },
   name: "exhauster-component",
+  props: {
+    exhauster: Object,
+  },
+  data() {
+    return {
+      items: [0, 1],
+      warnings: [],
+      status: 'success'
+    }
+  },
   methods: {
     onExhausterClick() {
-      this.$router.push({ name: "exhauster", params: { id: 1 } });
+      this.$store.commit("setSelectedExhauster", this.exhauster);
+      this.$router.push({
+        name: "exhauster",
+        params: { id: this.exhauster.id },
+      });
     },
+    onAlarm(event) {
+      this.$store.commit('setAlarmModal', { isOpen: true, data: { ...event, ...this.exhauster } });
+      this.status = 'alarm'
+    },
+    onWarning() {
+      this.status = 'warning'
+    }
   },
 };
 </script>
@@ -106,7 +128,19 @@ export default {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: #cd2b37;
+  background-color: #35B733;
+}
+
+.success {
+  background-color: #35B733;
+}
+
+.warning {
+  background-color: #EE6B33;
+}
+
+.alarm {
+  background-color: #CD2B37;
 }
 
 hr {

@@ -7,7 +7,7 @@
     >
       <div class="text-h6">{{ number }}</div>
     </div>
-    <PodshipnikCard :number="number" :showCard="showCard" />
+    <PodshipnikCard :number="number" :showCard="showCard" :data="data" />
   </div>
 </template>
 
@@ -21,6 +21,7 @@ export default {
   },
   props: {
     number: Number,
+    data: Object
   },
   data() {
     return {
@@ -29,7 +30,6 @@ export default {
   },
   methods: {
     toggleCard() {
-      console.log(this.showCard);
       this.showCard = !this.showCard;
     },
   },

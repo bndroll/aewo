@@ -1,15 +1,20 @@
 <template>
   <div
+    :class=[status]
     class="chip-container mx-1 pa-1 d-flex align-center justify-space-between"
   >
-    <span>T</span>
-    <v-icon x-small color="#868686">mdi-thermometer</v-icon>
+    <span>{{ data.label }}</span>
+    <v-icon x-small color="#868686">{{ data.icon }}</v-icon>
   </div>
 </template>
 
 <script>
 export default {
   name: "Chip", //eslint-disable-line
+  props: {
+    data: Object,
+    status: String,
+  }
 };
 </script>
 
@@ -24,4 +29,13 @@ export default {
   font-size: 13px;
   line-height: 15px;
 }
+
+.warning {
+  background-color: #FAB82E;
+}
+
+.alarm {
+  background-color: #CD2B37;
+}
+
 </style>

@@ -22,15 +22,22 @@
             $route.name === 'exhauster' || $route.name === 'dashboard',
         }"
       >
-        / Состояние эксгаустера X-172
+        / Состояние эксгаустера {{ selectedExhauster.name }}
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: "NavBar",
+  computed: {
+    ...mapState({
+      selectedExhauster: (state) => state.selectedExhauster,
+    }),
+  },
 };
 </script>
 

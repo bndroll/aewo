@@ -2,6 +2,7 @@
   <div
     class="ex-container d-flex justify-start align-center rounded-xl flex-column"
   >
+    <LastUpdate />
     <div class="d-flex flex-column mt-4 mb-16 align-center">
       <ExNavigation class="mb-4" />
       <div class="d-flex justify-space-between">
@@ -21,21 +22,21 @@
         </div>
       </div>
     </div>
-    <div class="image-container">
-      <PodshipnikSmall :number="9" />
-      <PodshipnikSmall :number="8" />
-      <PodshipnikSmall :number="7" />
-      <PodshipnikSmall :number="6" />
-      <PodshipnikSmall :number="5" />
-      <PodshipnikSmall :number="4" />
-      <PodshipnikSmall :number="3" />
-      <PodshipnikSmall :number="2" />
-      <PodshipnikSmall :number="1" />
-      <GasTemperature />
-      <OilLevel />
-      <OilPressure />
-      <MainDrive />
-      <Cooler />
+    <div class="image-container" v-if="exhauster">
+      <PodshipnikSmall :number="9" :data="exhauster.pod9" />
+      <PodshipnikSmall :number="8" :data="exhauster.pod8" />
+      <PodshipnikSmall :number="7" :data="exhauster.pod7" />
+      <PodshipnikSmall :number="6" :data="exhauster.pod6" />
+      <PodshipnikSmall :number="5" :data="exhauster.pod5" />
+      <PodshipnikSmall :number="4" :data="exhauster.pod4" />
+      <PodshipnikSmall :number="3" :data="exhauster.pod3" />
+      <PodshipnikSmall :number="2" :data="exhauster.pod2" />
+      <PodshipnikSmall :number="1" :data="exhauster.pod1" />
+      <GasTemperature  :data="exhauster.gasCollector" />
+      <OilLevel :data="exhauster.oilSystem" />
+      <OilPressure :data="exhauster.oilSystem" />
+      <MainDrive :data="exhauster.mainDrive" />
+      <Cooler :data="exhauster.cooler" />
       <img src="../assets/schema.png" alt="" />
     </div>
   </div>
@@ -49,12 +50,11 @@ import OilPressure from "../components/OilPressure.vue";
 import MainDrive from "../components/MainDrive.vue";
 import Cooler from "../components/Cooler.vue";
 import ExNavigation from "../components/ExNavigation.vue";
+import LastUpdate from "../components/LastUpdate.vue";
+import { mapState } from 'vuex'
 
 export default {
   name: "ExhausterView",
-  mounted() {
-    console.log(this.$route.params.id);
-  },
   components: {
     PodshipnikSmall,
     GasTemperature,
@@ -63,8 +63,32 @@ export default {
     MainDrive,
     Cooler,
     ExNavigation,
+    LastUpdate
   },
-};
+  data() {
+    return {
+      exhauster: null
+    }
+  },
+  mounted() {
+    this.exhauster = this.$store.state.allExhausters[`exhauster${this.$route.params.id}`]
+    this.$ws.emit("exhauster", this.$route.params.id);
+    this.$ws.on("data", (data) => {
+      this.$store.commit('setExhauster', { id: this.$route.params.id, data })
+      this.$store.commit('setLastTimeUpdate', +new Date())
+    });
+  },
+  computed: {
+    ...mapState({
+      allExhausters: state => state.allExhausters
+    })
+  },
+  watch: {
+    allExhausters(data) {
+      this.exhauster = data[`exhauster${this.$route.params.id}`]
+    },
+  }
+}
 </script>
 <style lang="scss">
 .ex-container {
@@ -94,7 +118,7 @@ export default {
 }
 
 .pod-card-8 {
-  top: 382px;
+  top: 379px;
   left: -109px;
 }
 
@@ -104,7 +128,7 @@ export default {
 }
 
 .pod-card-7 {
-  top: 386px;
+  top: 379px;
   left: 200px;
 }
 

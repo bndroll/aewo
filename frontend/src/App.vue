@@ -17,6 +17,10 @@ export default {
     NavBar,
     Modal
   },
+    async mounted() {
+    const response = await this.$http.get('/metrics/find-last');
+    this.$store.commit('setAllExhausters', response.data);
+  }
 };
 </script>
 

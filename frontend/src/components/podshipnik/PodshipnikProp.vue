@@ -1,29 +1,46 @@
 <template>
   <div
     class="mt-1 pa-1 rounded d-flex flex-row justify-space-between"
-    :class="{ warning: isWarning, alarm: isAlarm }"
+    :class="{ warning: status === 'warning', alarm: status === 'alarm' }"
   >
     <div>{{ label }}</div>
-    <div class="text-bold">{{ value }}</div>
+    <div class="text-bold">{{ data.value.toFixed(2) }}</div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
 export default {
   name: "PodshipnikProp",
   props: {
     label: String,
-    value: String,
-    restrictions: Object,
+    data: Object,
+    number: Number
   },
+
   computed: {
-    isWarning() {
-      return false;
-    },
-    isAlarm() {
-      return false;
-    },
+    ...mapState({
+      selectedExhauster: state => state.selectedExhauster
+    }),
+    status() {
+      if (this.data.value > this.data.alarmMax) {
+        return 'alarm';
+      } else {
+        if (this.data.value > this.data.warningMax && this.data.value < this.data.alarmMax) {
+          return'warning';
+        }
+      }
+      return '';
+    }
   },
+  watch: {
+    status(val) {
+      if (val === 'alarm') {
+        this.$emit('alarm', )
+        this.$store.commit('setAlarmModal', { isOpen: true, data: { item: 'pod', number: this.number, event: 'temperature', name: this.selectedExhauster.name } });
+      }
+    }
+  }
 };
 </script>
 

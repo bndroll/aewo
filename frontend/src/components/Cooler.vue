@@ -6,7 +6,7 @@
         class="pa-2 d-flex justify-center align-center"
         small
         style="width: 63px"
-        >233 C</v-chip
+        >{{ data.water.temperatureBefore.toFixed(2) }} C</v-chip
       >
       <v-icon>mdi-arrow-down-thin</v-icon>
     </div>
@@ -15,7 +15,7 @@
         class="pa-2 d-flex justify-center align-center"
         small
         style="width: 63px"
-        >233 C</v-chip
+        >{{ data.water.temperatureAfter.toFixed(2) }} C</v-chip
       >
       <v-icon>mdi-arrow-up-thin</v-icon>
     </div>
@@ -23,13 +23,13 @@
       class="in-2 pa-2 d-flex justify-center align-center"
       small
       style="width: 63px"
-      >233 C</v-chip
+      >{{ data.oil.temperatureBefore.toFixed(2) }} C</v-chip
     >
     <v-chip
       class="out-2 pa-2 d-flex justify-center align-center"
       small
       style="width: 63px"
-      >233 C</v-chip
+      >{{ data.oil.temperatureAfter.toFixed(2) }} C</v-chip
     >
   </div>
 </template>
@@ -37,6 +37,9 @@
 <script>
 export default {
   name: "Cooler", // eslint-disable-line
+  props: {
+    data: Object
+  }
 };
 </script>
 
